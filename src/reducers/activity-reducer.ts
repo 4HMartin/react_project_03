@@ -1,8 +1,12 @@
 import { Activity } from "../types";
 
-export type ActivityActions = {
-
-}
+/**
+ * Actions are the functions that handle all the logic to modify your state.
+ * - type: Describes what is happening in this action.
+ * - payload: Is the information that modifies your state.
+ */
+export type ActivityActions = 
+    { type: 'save-activity', payload: { newActivity : Activity } }
 
 type ActivityState = {
     activities : Activity[]
@@ -18,4 +22,10 @@ export const activityReducer = (
         action: ActivityActions
     ) => {
 
+    if(action.type === 'save-activity'){
+        // This code handle all the logic to update the state
+        console.log('from type save-activity')
+    }
+
+    return state
 }
