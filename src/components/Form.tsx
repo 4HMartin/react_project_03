@@ -1,9 +1,10 @@
-import { useState, ChangeEvent } from "react"
+import { useState, ChangeEvent, FormEvent } from "react"
 import { categories } from "../data/categories"
+import { Activity } from "../types";
 
 export default function Form() {
 
-    const [activity, setActivity] = useState({
+    const [activity, setActivity] = useState<Activity>({
         category: 1,
         name: '',
         calories: 0
@@ -11,14 +12,30 @@ export default function Form() {
 
     /** Basic method to write in the state the user input */
     const handleChange = (e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>) => {
+        // Identify the fields that will be converted to a number.
+        const isNumberField = ['category','calories'].includes(e.target.id);
         setActivity({
             ...activity,
-            [e.target.id]: e.target.value
+            [e.target.id]: isNumberField ? +e.target.value : e.target.value
         })
     }
 
+    const isValidActivity = () => {
+        const { name, calories } = activity
+        return name.trim() !== '' && calories > 0
+    }
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+
+    }
+
     return (
-        <form className="space-y-5 bg-white shadow p-10 rounded-lg">
+        <form 
+            className="space-y-5 bg-white shadow p-10 rounded-lg"
+            onSubmit={handleSubmit}    
+        >
             {/* SELECT */}
             <div className="grid grid-cols-1 gap-3">
                 <label htmlFor="category" className="font-bold">Category:</label>
@@ -65,8 +82,9 @@ export default function Form() {
 
             <input
                 type="submit"
-                className="bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer"
-                value="Save Food or Save Exercice"
+                className="disabled:opacity-10 bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer"
+                value={activity.category === 1 ? 'Save food' : 'Save exercice'}
+                disabled={!isValidActivity()}
             />
         </form>
     )
