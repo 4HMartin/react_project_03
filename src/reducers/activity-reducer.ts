@@ -24,7 +24,14 @@ export const activityReducer = (
 
     if(action.type === 'save-activity'){
         // This code handle all the logic to update the state
-        console.log('from type save-activity')
+        console.log("Form data: ", action.payload.newActivity);
+
+        // required to return the updated state
+        return {
+            // copy of the previous state
+            ...state,
+            activities: [...state.activities, action.payload.newActivity]
+        }
     }
 
     return state
