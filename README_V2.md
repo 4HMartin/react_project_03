@@ -3,6 +3,11 @@
 ## Project description
 
 ## Tech stack + libraries
+**uuid**
+Generar identificadores únicos.
+    `npm i uuid`
+    `npm i --save-dev @types/uuid`
+    `import { v4 as uuidv4 } from 'uuid'`
 
 ## Hooks used
 
