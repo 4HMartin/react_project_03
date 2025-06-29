@@ -5,16 +5,20 @@ import { Activity } from "../types";
  * - type: Describes what is happening in this action.
  * - payload: Is the information that modifies your state.
  */
-export type ActivityActions = 
-    { type: 'save-activity', payload: { newActivity : Activity } }
+export type ActivityActions =
+    { type: 'save-activity', payload: { newActivity : Activity } } |
+    // Identify which element is active to edit
+    { type: 'set-activeId', payload: { id : Activity['id'] } } 
 
 type ActivityState = {
-    activities : Activity[]
+    activities : Activity[],
+    activeID: Activity['id']
 }
 
 /** The initial state with which the reducer is created */
 export const initialState: ActivityState = {
-    activities: []
+    activities: [],
+    activeID: ''
 }
 
 export const activityReducer = (
@@ -24,13 +28,20 @@ export const activityReducer = (
 
     if(action.type === 'save-activity'){
         // This code handle all the logic to update the state
-        console.log("Form data: ", action.payload.newActivity);
+        // console.log("Form data: ", action.payload.newActivity);
 
         // required to return the updated state
         return {
             // copy of the previous state
             ...state,
             activities: [...state.activities, action.payload.newActivity]
+        }
+    }
+
+    if(action.type === 'set-activeId'){
+        return {
+            ...state,
+            activeId: action.payload.id
         }
     }
 

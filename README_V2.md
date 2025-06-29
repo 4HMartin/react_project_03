@@ -9,6 +9,10 @@ Generar identificadores únicos.
     `npm i --save-dev @types/uuid`
     `import { v4 as uuidv4 } from 'uuid'`
 
+**heroicons**
+Iconos de hero icons.
+    `npm i @heroicons/react`
+
 ## Hooks used
 
 #### useState
