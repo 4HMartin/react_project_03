@@ -6,19 +6,19 @@ import { Activity } from "../types";
  * - payload: Is the information that modifies your state.
  */
 export type ActivityActions =
-    { type: 'save-activity', payload: { newActivity : Activity } } |
-    // Identify which element is active to edit
-    { type: 'set-activeId', payload: { id : Activity['id'] } } 
+    { type: 'save-activity', payload: { newActivity : Activity } } |    // Create or Update an activity
+    { type: 'set-activeId', payload: { id : Activity['id'] } } |        // Identify which element is active to edit
+    { type: 'delete-activity', payload: { id : Activity['id'] } }       // Delete an activity
 
-type ActivityState = {
+export type ActivityState = {
     activities : Activity[],
-    activeID: Activity['id']
+    activeId: Activity['id']
 }
 
 /** The initial state with which the reducer is created */
 export const initialState: ActivityState = {
     activities: [],
-    activeID: ''
+    activeId: ''
 }
 
 export const activityReducer = (
@@ -30,11 +30,18 @@ export const activityReducer = (
         // This code handle all the logic to update the state
         // console.log("Form data: ", action.payload.newActivity);
 
-        // required to return the updated state
+        let updatedActivities : Activity[] = []
+        if(state.activeId){ // If an activeId exists, we are editing an activity, otherwise we are creating a new one
+            updatedActivities = state.activities.map( activity => activity.id === state.activeId ? action.payload.newActivity : activity )
+        } else {
+            updatedActivities = [...state.activities, action.payload.newActivity]
+        }
+        
         return {
             // copy of the previous state
             ...state,
-            activities: [...state.activities, action.payload.newActivity]
+            activities: updatedActivities,
+            activeId: '' // reset the active id once the activity is created/updated
         }
     }
 
@@ -42,6 +49,13 @@ export const activityReducer = (
         return {
             ...state,
             activeId: action.payload.id
+        }
+    }
+
+    if(action.type === 'delete-activity') {
+        return {
+            ...state,
+            activities: state.activities.filter( activity => activity.id !== action.payload.id )
         }
     }
 
