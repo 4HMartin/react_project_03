@@ -27,6 +27,9 @@ El hook useReducer en React es una alternativa a use State que se utiliza para m
 
     Por ejemplo, la lógica de la acción de guardar una nueva actividad desde el formulario se maneja en el reducer si el tipo de actividad coincide con el tipo definido en las acciones del activityReducer para "save-activity".
 
+#### useMemo
+useMemo will only recompute the memoized value when one of the deps has changed.
+
 ## Methods and experience gains
 
 - Manejo del estado para un formulario dinámico sin uso de librerias externas.
