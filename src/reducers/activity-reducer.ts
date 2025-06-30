@@ -8,16 +8,24 @@ import { Activity } from "../types";
 export type ActivityActions =
     { type: 'save-activity', payload: { newActivity : Activity } } |    // Create or Update an activity
     { type: 'set-activeId', payload: { id : Activity['id'] } } |        // Identify which element is active to edit
-    { type: 'delete-activity', payload: { id : Activity['id'] } }       // Delete an activity
+    { type: 'delete-activity', payload: { id : Activity['id'] } } |     // Delete an activity
+    { type: 'restart-app' }       // Restart de App
+    
 
 export type ActivityState = {
     activities : Activity[],
     activeId: Activity['id']
 }
 
+/** Retrieves the activities in localstorage to the initial state */
+const localStorageActivities = () : Activity[] => {
+    const activities = localStorage.getItem('activities');
+    return activities ? JSON.parse(activities) : []
+}
+
 /** The initial state with which the reducer is created */
 export const initialState: ActivityState = {
-    activities: [],
+    activities: localStorageActivities(),
     activeId: ''
 }
 
@@ -56,6 +64,13 @@ export const activityReducer = (
         return {
             ...state,
             activities: state.activities.filter( activity => activity.id !== action.payload.id )
+        }
+    }
+
+    if(action.type === 'restart-app'){
+        return {
+            activities: [],
+            activeId: ''
         }
     }
 
