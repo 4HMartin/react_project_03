@@ -9,7 +9,7 @@ export type ActivityActions =
     { type: 'save-activity', payload: { newActivity : Activity } } |    // Create or Update an activity
     { type: 'set-activeId', payload: { id : Activity['id'] } } |        // Identify which element is active to edit
     { type: 'delete-activity', payload: { id : Activity['id'] } } |     // Delete an activity
-    { type: 'restart-app' }       // Restart de App
+    { type: 'restart-app' }                                             // Restart de App
     
 
 export type ActivityState = {
